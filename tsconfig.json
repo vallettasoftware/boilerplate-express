@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "lib": ["es6", "es2019", "dom"],
+    "outDir": "dist",
+    "sourceMap": true,
+    "importHelpers": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+    },
+    "noErrorTruncation": true,
+    "skipLibCheck": true
+  },
+  "files": ["src/server.ts"],
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
+  ]
+}
