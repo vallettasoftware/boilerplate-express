@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: # Enables manual trigger for the workflow
 
 jobs:
   prepare:
@@ -76,3 +77,22 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/boilerplate-express:latest
+
+  deploy:
+    needs: docker-build-push # Or remove this if it doesn't need to wait for docker-build-push
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' }} # Ensures this job runs only when manually triggered
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SSH and Run Docker Compose
+        run: |
+          echo "$SSH_PRIVATE_KEY" | base64 -d > ssh_key
+          chmod 600 ssh_key
+          ssh -o StrictHostKeyChecking=no -i ssh_key $SSH_USER@$SSH_HOST "cd $DEPLOY_DIRECTORY && docker-compose down && docker-compose up --force-recreate --no-deps -d"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          DEPLOY_DIRECTORY: ${{ secrets.DEPLOY_DIRECTORY }}
