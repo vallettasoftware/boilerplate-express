@@ -1,6 +1,12 @@
 # Boilerplate: Node.js Web API service by express framework
+# CI/CD: deployment as Docker Container
 
 A multifunctional enterprise HTTP API project template based on modern approaches and the latest version of express framework.
+
+CI/CD configured using BitBucket:
+- runs linting and tests
+- creates a Docker image and places it in the registry.
+- the application is deployed and launched in Docker Container
 
 *Change `BoilerplateApi` to your project name.*
 
